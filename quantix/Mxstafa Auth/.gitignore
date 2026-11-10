@@ -1,0 +1,19 @@
+node_modules/
+dist/
+client/dist/
+*.log
+.DS_Store
+Thumbs.db
+
+# Secrets & local config (NEVER commit these)
+.env
+server/.env
+bot/config.json
+server/data/.jwt-secret
+
+# Local data (database + bot state)
+server/data/
+bot/data/
+*.db
+*.db-wal
+*.db-shm

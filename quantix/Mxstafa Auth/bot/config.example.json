@@ -1,0 +1,26 @@
+{
+  "token": "YOUR_DISCORD_BOT_TOKEN",
+  "clientId": "YOUR_BOT_APPLICATION_ID",
+  "mainGuildId": "MAIN_SERVER_ID",
+  "ticketGuildId": "LOG_TICKET_SERVER_ID",
+  "staffRoleId": "",
+  "categories": {
+    "openTickets": "OPEN_TICKETS_CATEGORY_ID",
+    "closedTickets": "CLOSED_TICKETS_CATEGORY_ID"
+  },
+  "channels": {
+    "webLogs": "WEB_LOGS_CHANNEL_ID",
+    "botLogs": "BOT_LOGS_CHANNEL_ID",
+    "ticketLogs": "TICKET_LOGS_CHANNEL_ID"
+  },
+  "api": {
+    "baseUrl": "http://localhost:3001",
+    "key": "quantix-bot-dev-key-change-me"
+  },
+  "support": {
+    "title": "Quantix Support",
+    "description": "Need help? Click the button below to open a private ticket. A member of our staff team will assist you as soon as possible.",
+    "color": 15790320,
+    "buttonLabel": "Create Ticket"
+  }
+}

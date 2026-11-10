@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <!-- Menu New Files -->
+    <ClCompile Include="menu_new\helpers\anim\anim.cpp" />
+    <ClCompile Include="menu_new\interface\elements_manager.cpp" />
+    <ClCompile Include="menu_new\interface\menu_i.cpp" />
+    <!-- ImGui Files -->
+    <ClCompile Include="thirdparty\imgui\backends\imgui_impl_dx11.cpp" />
+    <ClCompile Include="thirdparty\imgui\backends\imgui_impl_win32.cpp" />
+    <ClCompile Include="thirdparty\imgui\imgui.cpp" />
+    <ClCompile Include="thirdparty\imgui\imgui_draw.cpp" />
+    <ClCompile Include="thirdparty\imgui\imgui_freetype.cpp" />
+    <ClCompile Include="thirdparty\imgui\imgui_tables.cpp" />
+    <ClCompile Include="thirdparty\imgui\imgui_widgets.cpp" />
+    <!-- Cheat Files -->
+    <ClCompile Include="cheat\Main\Cheat.cpp" />
+    <ClCompile Include="cheat\Main\Auth_WinHTTP.cpp" />
+    <ClCompile Include="cheat\Main\Features\aim.cpp" />
+    <ClCompile Include="cheat\Main\Features\esp.cpp" />
+    <ClCompile Include="cheat\Main\Features\player.cpp" />
+    <ClCompile Include="cheat\Main\Features\playernames.cpp" />
+    <ClCompile Include="cheat\Main\Features\radar.cpp" />
+    <ClCompile Include="cheat\Main\Features\silent.cpp" />
+    <ClCompile Include="cheat\Main\Features\triggerbot.cpp" />
+    <ClCompile Include="cheat\Main\FivemSDK\Fivem.cpp" />
+    <ClCompile Include="cheat\Utils\Notifs.cpp" />
+    <ClCompile Include="cheat\Utils\interface_stub.cpp" />
+    <ClCompile Include="cheat\Utils\Render\Overlay.cpp" />
+    <ClCompile Include="cheat\Utils\Utilities\Memory.cpp" />
+    <ClCompile Include="cheat\Utils\Utilities\Misc.cpp" />
+    <!-- Old Framework Helper Files (needed by new menu system) -->
+    <ClCompile Include="framework\helpers\binds.cpp" />
+    <ClCompile Include="framework\helpers\config.cpp" />
+    <ClCompile Include="framework\helpers\draw.cpp" />
+    <ClCompile Include="framework\helpers\fonts.cpp" />
+    <ClCompile Include="framework\helpers\helpers.cpp" />
+    <ClCompile Include="framework\helpers\notify.cpp" />
+    <ClCompile Include="framework\widgets\window.cpp" />
+    <ClCompile Include="framework\gui_stubs.cpp" />
+    <ClCompile Include="main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="thirdparty\freetype\win64\freetype.lib" />
+  </ItemGroup>
+  <ItemGroup>
+    <!-- Menu New Headers -->
+    <ClInclude Include="menu_new\bytes\bg.h" />
+    <ClInclude Include="menu_new\bytes\esp.h" />
+    <ClInclude Include="menu_new\bytes\fa_icons.h" />
+    <ClInclude Include="menu_new\bytes\icon.h" />
+    <ClInclude Include="menu_new\bytes\loadbg.h" />
+    <ClInclude Include="menu_new\bytes\logo.h" />
+    <ClInclude Include="menu_new\bytes\medium.h" />
+    <ClInclude Include="menu_new\bytes\semibold.h" />
+    <ClInclude Include="menu_new\defs\colors.h" />
+    <ClInclude Include="menu_new\defs\fonts.h" />
+    <ClInclude Include="menu_new\defs\textures.h" />
+    <ClInclude Include="menu_new\helpers\anim\anim.h" />
+    <ClInclude Include="menu_new\helpers\anim\hash.hpp" />
+    <ClInclude Include="menu_new\helpers\elastic.h" />
+    <ClInclude Include="menu_new\helpers\feats.h" />
+    <ClInclude Include="menu_new\helpers\helpers.h" />
+    <ClInclude Include="menu_new\helpers\render.h" />
+    <ClInclude Include="menu_new\helpers\restore.h" />
+    <ClInclude Include="menu_new\helpers\widgets.h" />
+    <ClInclude Include="menu_new\interface\elements_manager.h" />
+    <ClInclude Include="menu_new\interface\esp_shared.h" />
+    <ClInclude Include="menu_new\interface\menu_i.h" />
+    <ClInclude Include="menu_new\interface\pages.h" />
+    <ClInclude Include="menu_new\interface\settings_shared.h" />
+    <!-- ImGui Headers -->
+    <ClInclude Include="thirdparty\imgui\backends\imgui_impl_dx11.h" />
+    <ClInclude Include="thirdparty\imgui\backends\imgui_impl_win32.h" />
+    <ClInclude Include="thirdparty\imgui\imconfig.h" />
+    <ClInclude Include="thirdparty\imgui\imgui.h" />
+    <ClInclude Include="thirdparty\imgui\imgui_freetype.h" />
+    <ClInclude Include="thirdparty\imgui\imgui_internal.h" />
+    <!-- Cheat Headers -->
+    <ClInclude Include="cheat\Main\Cheat.hpp" />
+    <ClInclude Include="cheat\Main\Auth.hpp" />
+    <ClInclude Include="cheat\Main\Options.hpp" />
+    <ClInclude Include="cheat\Main\xorstring.h" />
+    <ClInclude Include="cheat\Main\Features\aim.hpp" />
+    <ClInclude Include="cheat\Main\Features\esp.hpp" />
+    <ClInclude Include="cheat\Main\Features\player.hpp" />
+    <ClInclude Include="cheat\Main\Features\playernames.hpp" />
+    <ClInclude Include="cheat\Main\Features\radar.hpp" />
+    <ClInclude Include="cheat\Main\Features\silent.hpp" />
+    <ClInclude Include="cheat\Main\Features\triggerbot.hpp" />
+    <ClInclude Include="cheat\Main\FivemSDK\Classes.hpp" />
+    <ClInclude Include="cheat\Main\FivemSDK\Fivem.hpp" />
+    <ClInclude Include="cheat\Main\FivemSDK\GTADefines.hpp" />
+    <ClInclude Include="cheat\Main\FivemSDK\Offsets.hpp" />
+    <ClInclude Include="cheat\Main\FivemSDK\simplemath.h" />
+    <ClInclude Include="cheat\Utils\FrameWork.hpp" />
+    <ClInclude Include="cheat\Utils\Notifs.hpp" />
+    <ClInclude Include="cheat\Utils\Math\Matrix4x4.hpp" />
+    <ClInclude Include="cheat\Utils\Render\Interface.hpp" />
+    <ClInclude Include="cheat\Utils\Render\kaanlar.h" />
+    <ClInclude Include="cheat\Utils\Render\Overlay.hpp" />
+    <ClInclude Include="cheat\Utils\Security\LazyImporter.hpp" />
+    <ClInclude Include="cheat\Utils\Security\XorStr.hpp" />
+    <ClInclude Include="cheat\Utils\Utilities\Memory.hpp" />
+    <ClInclude Include="cheat\Utils\Utilities\Misc.hpp" />
+    <!-- Old Framework Headers -->
+    <ClInclude Include="framework\data\fonts.h" />
+    <ClInclude Include="framework\data\images.h" />
+    <ClInclude Include="framework\headers\animations.h" />
+    <ClInclude Include="framework\headers\binds.h" />
+    <ClInclude Include="framework\headers\config.h" />
+    <ClInclude Include="framework\headers\draw.h" />
+    <ClInclude Include="framework\headers\flags.h" />
+    <ClInclude Include="framework\headers\font.h" />
+    <ClInclude Include="framework\headers\functions.h" />
+    <ClInclude Include="framework\headers\includes.h" />
+    <ClInclude Include="framework\headers\sections.h" />
+    <ClInclude Include="framework\headers\widgets.h" />
+    <ClInclude Include="framework\helpers\elastic.h" />
+    <ClInclude Include="framework\image_loaders\image_dx11.h" />
+    <ClInclude Include="framework\settings\colors.h" />
+    <ClInclude Include="framework\settings\elements.h" />
+    <ClInclude Include="framework\settings\variables.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="framework\data\icon.ico" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{9F316E83-5AE5-4939-A723-305A94F48005}</ProjectGuid>
+    <RootNamespace>example_win32_directx11</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>$(ProjectDir)$(Configuration)\</OutDir>
+    <IntDir>$(ProjectDir)$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>$(ProjectDir)$(Configuration)\</OutDir>
+    <IntDir>$(ProjectDir)$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>$(ProjectDir)$(Configuration)\</OutDir>
+    <IntDir>$(ProjectDir)$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>$(ProjectDir)\bin\</OutDir>
+    <IntDir>$(ProjectDir)\build\$(Configuration)\</IntDir>
+    <IncludePath>$(SolutionDir)\thirdparty\imgui;$(SolutionDir)\thirdparty\imgui\backends;$(SolutionDir)\thirdparty\dxsdk\Include;$(SolutionDir)\thirdparty\freetype\include;$(SolutionDir)\cheat;$(SolutionDir)\cheat\Utils;$(SolutionDir)\cheat\Main;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)\thirdparty\dxsdk\Lib\x64;$(SolutionDir)\thirdparty\freetype\win64;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level4</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>$(ProjectDir)thirdparty\imgui;$(ProjectDir)thirdparty\imgui\backends;$(ProjectDir)cheat;$(ProjectDir)cheat\Utils;$(ProjectDir)cheat\Main;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>/utf-8 /FS %(AdditionalOptions)</AdditionalOptions>
+      <PreprocessorDefinitions>_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>d3d11.lib;d3dcompiler.lib;dxgi.lib;d3dx11.lib;winhttp.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)thirdparty\dxsdk\Lib\x86;$(DXSDK_DIR)/Lib/x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <SubSystem>Windows</SubSystem>
+      <EntryPointSymbol>WinMainCRTStartup</EntryPointSymbol>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level4</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>$(ProjectDir)thirdparty\imgui;$(ProjectDir)thirdparty\imgui\backends;$(ProjectDir)cheat;$(ProjectDir)cheat\Utils;$(ProjectDir)cheat\Main;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>/utf-8 /FS %(AdditionalOptions)</AdditionalOptions>
+      <PreprocessorDefinitions>_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>d3d11.lib;d3dcompiler.lib;dxgi.lib;d3dx11.lib;winhttp.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)thirdparty\dxsdk\Lib\x64;$(DXSDK_DIR)/Lib/x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <SubSystem>Windows</SubSystem>
+      <EntryPointSymbol>WinMainCRTStartup</EntryPointSymbol>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level4</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <AdditionalIncludeDirectories>$(ProjectDir)thirdparty\imgui;$(ProjectDir)thirdparty\imgui\backends;$(ProjectDir)cheat;$(ProjectDir)cheat\Utils;$(ProjectDir)cheat\Main;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <AdditionalOptions>/utf-8 /FS %(AdditionalOptions)</AdditionalOptions>
+      <PreprocessorDefinitions>_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>d3d11.lib;d3dcompiler.lib;dxgi.lib;d3dx11.lib;winhttp.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)thirdparty\dxsdk\Lib\x86;$(DXSDK_DIR)/Lib/x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <SubSystem>Windows</SubSystem>
+      <EntryPointSymbol>WinMainCRTStartup</EntryPointSymbol>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level2</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <AdditionalIncludeDirectories>$(ProjectDir)thirdparty\imgui;$(ProjectDir)thirdparty\imgui\backends;$(ProjectDir)cheat;$(ProjectDir)cheat\Utils;$(ProjectDir)cheat\Main;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <AdditionalOptions>/utf-8 /FS %(AdditionalOptions)</AdditionalOptions>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
+      <PreprocessorDefinitions>_WINDOWS;CURL_STATICLIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>d3d11.lib;d3dcompiler.lib;dxgi.lib;d3dx11.lib;winhttp.lib;wbemuuid.lib;iphlpapi.lib;ws2_32.lib;crypt32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)thirdparty\dxsdk\Lib\x64;$(DXSDK_DIR)/Lib/x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <SubSystem>Windows</SubSystem>
+      <EntryPointSymbol>WinMainCRTStartup</EntryPointSymbol>
+    </Link>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

@@ -1,0 +1,217 @@
+// Wheel Silent - ranges: FOV 0-300, Distance 0-500
+{"wheel_silent", false},
+{"wheel_silent_key_enabled", false},
+{"wheel_silent_fov", 50},
+{"wheel_silent_distance", 200},
+{"wheel_silent_visible_check", false},
+{"wheel_silent_draw_fov", false},
+widgets->begin_content_group("WHEEL SILENT");
+widgets->checkbox_setting("Wheel Silent", "Enables wheel silent functionality", var->cfg.get<bool>("wheel_silent"));
+gui->separator();
+widgets->checkbox_key("Wheel Silent Key", "Key to activate wheel silent", var->cfg.get<bool>("wheel_silent_key_enabled"));
+gui->separator();
+widgets->slider_int("Fov##wheel", var->cfg.get<int>("wheel_silent_fov"), 0, 300, "%d");
+gui->separator();
+widgets->slider_int("Max Distance##wheel", var->cfg.get<int>("wheel_silent_distance"), 0, 500, "%dm");
+gui->separator();
+widgets->checkbox("Visible Check##wheel", "Only aim when target is visible", var->cfg.get<bool>("wheel_silent_visible_check"));
+gui->separator();
+widgets->checkbox("Draw Fov##wheel", "Display field of view circle", var->cfg.get<bool>("wheel_silent_draw_fov"));
+widgets->end_content_group("WHEEL SILENT");
+// "Wheel Silent Key" hold modunda çalışır (tuş basılıyken aktif)
+if (strcmp(label, "Silent Key") == 0 || 
+    ...
+    strcmp(label, "Fix Vehicle Key") == 0 ||
+    strcmp(label, "Wheel Silent Key") == 0) {
+    current_keybind->type = c_keybinds::switch_type::hold;
+}
+namespace Cheat {
+    namespace Silent {
+        void run();
+        Vector3D GetCurrentTargetPos();
+        bool HasCurrentTarget();
+
+        // Wheel Silent functions
+        Vector3D GetWheelTargetPos();
+        bool HasWheelTarget();
+    }
+}
+static Vector3D WheelTargetPos = { 0, 0, 0 };
+static bool HasWheelTargetActive = false;
+
+Vector3D GetWheelTargetPos() { return WheelTargetPos; }
+bool HasWheelTarget() { return HasWheelTargetActive; }
+// Tekerlek pozisyonu hesaplama fonksiyonu
+static Vector3D GetVehicleWheelPosition(uint64_t vehiclePtr, int wheelIndex)
+{
+    if (!vehiclePtr || wheelIndex < 0 || wheelIndex > 3)
+        return Vector3D(0, 0, 0);
+
+    Vector3D vehiclePos = M_base::mem::Read<Vector3D>(vehiclePtr + 0x90);
+
+    // Araç rotasyon matrisini oku (4x4 matrix)
+    struct Matrix4x4 {
+        float _11, _12, _13, _14;
+        float _21, _22, _23, _24;
+        float _31, _32, _33, _34;
+        float _41, _42, _43, _44;
+    };
+    Matrix4x4 vehicleMatrix = M_base::mem::Read<Matrix4x4>(vehiclePtr + 0x60);
+
+    // Tekerlek offsetleri (sol ön, sağ ön, sol arka, sağ arka)
+    Vector3D wheelOffsets[4] = {
+        Vector3D(-0.9f, 1.4f, -0.35f),  // Sol ön
+        Vector3D(0.9f, 1.4f, -0.35f),   // Sağ ön
+        Vector3D(-0.9f, -1.4f, -0.35f), // Sol arka
+        Vector3D(0.9f, -1.4f, -0.35f)   // Sağ arka
+    };
+
+    Vector3D offset = wheelOffsets[wheelIndex];
+
+    // Offset'i araç rotasyonuna göre döndür
+    Vector3D wheelWorldPos;
+    wheelWorldPos.x = vehiclePos.x + (offset.x * vehicleMatrix._11 + offset.y * vehicleMatrix._21 + offset.z * vehicleMatrix._31);
+    wheelWorldPos.y = vehiclePos.y + (offset.x * vehicleMatrix._12 + offset.y * vehicleMatrix._22 + offset.z * vehicleMatrix._32);
+    wheelWorldPos.z = vehiclePos.z + (offset.x * vehicleMatrix._13 + offset.y * vehicleMatrix._23 + offset.z * vehicleMatrix._33);
+
+    return wheelWorldPos;
+}
+// Wheel Silent tuş kontrolü
+bool wheelSilentKeyPressed = var->cfg.get<bool>("wheel_silent") && 
+    var->cfg.get<bool>("wheel_silent_key_enabled") && 
+    keybinds && keybinds->is_bind_active("Wheel Silent Key");
+
+// Wheel Silent - Araç tekerlerine silent aim
+if (var->cfg.get<bool>("wheel_silent") && wheelSilentKeyPressed && GetForegroundWindow() != hwnd) {
+    Vector3D closestWheelPos = { 0, 0, 0 };
+    float closestDist = FLT_MAX;
+    int screenCenterX = GetSystemMetrics(SM_CXSCREEN) / 2;
+    int screenCenterY = GetSystemMetrics(SM_CYSCREEN) / 2;
+
+    int wheelFov = var->cfg.get<int>("wheel_silent_fov");
+    int wheelDistance = var->cfg.get<int>("wheel_silent_distance");
+    bool wheelVisCheck = var->cfg.get<bool>("wheel_silent_visible_check");
+
+    Vector3D localPos = C_Five.Cache.pLocalPlayer->GetCoordinate();
+
+    // Tüm araçları tara (mevcut VehicleList kullanarak)
+    std::lock_guard<std::mutex> lock(C_Five.GetLockLists());
+    auto& vehicleList = C_Five.GetVehicleList();
+
+    for (auto& vehicleInfo : vehicleList) {
+        if (!vehicleInfo.Vehicle) continue;
+
+        uint64_t vehiclePtr = (uint64_t)vehicleInfo.Vehicle;
+        float vDistance = vehicleInfo.Distance;
+
+        if (vDistance > wheelDistance) continue;
+
+        // Görünürlük kontrolü
+        if (wheelVisCheck) {
+            BYTE visFlag = M_base::mem::Read<BYTE>(vehiclePtr + VisibleFlag);
+            if (visFlag == 36 || visFlag == 0 || visFlag == 4) {
+                continue;
+            }
+        }
+
+        // 4 tekerleği kontrol et
+        for (int wheelIdx = 0; wheelIdx < 4; wheelIdx++) {
+            Vector3D wheelWorldPos = GetVehicleWheelPosition(vehiclePtr, wheelIdx);
+            if (wheelWorldPos.x == 0 && wheelWorldPos.y == 0 && wheelWorldPos.z == 0) continue;
+
+            ImVec2 wheelScreen = C_Five.WorldToScreen(wheelWorldPos);
+            if (wheelScreen.x == 0 && wheelScreen.y == 0) continue;
+
+            // FOV check
+            float dist = sqrtf(
+                (wheelScreen.x - screenCenterX) * (wheelScreen.x - screenCenterX) +
+                (wheelScreen.y - screenCenterY) * (wheelScreen.y - screenCenterY)
+            );
+
+            if (dist < wheelFov && dist < closestDist) {
+                closestDist = dist;
+                closestWheelPos = wheelWorldPos;
+            }
+        }
+    }
+
+    // En yakın tekerleğe silent aim uygula
+    if (!(closestWheelPos.x == 0 && closestWheelPos.y == 0 && closestWheelPos.z == 0)) {
+        WheelTargetPos = closestWheelPos;
+        HasWheelTargetActive = true;
+        ApplySilent(closestWheelPos);
+        WheelSilentApplied = true;
+
+        // Normal silent'ı devre dışı bırak
+        if (SilentApplied) {
+            SilentApplied = false;
+            HasTarget = false;
+        }
+    } else {
+        if (WheelSilentApplied) {
+            RestoreSilent();
+            WheelSilentApplied = false;
+            HasWheelTargetActive = false;
+        }
+    }
+}
+// Wheel Silent FOV çizimi
+if (var->cfg.get<bool>("wheel_silent_draw_fov") && var->cfg.get<bool>("wheel_silent"))
+{
+    ImVec4 wheelFovColorVec = var->cfg.get<ImVec4>("silent_fov_color");
+    ImU32 wheelFovColor = ImGui::GetColorU32(wheelFovColorVec);
+    ImGui::GetBackgroundDrawList()->AddCircle(ImVec2((GetSystemMetrics(SM_CXSCREEN)) / 2, (GetSystemMetrics(SM_CYSCREEN)) / 2), (float)var->cfg.get<int>("wheel_silent_fov"), wheelFovColor, 500, 1.5f);
+}
+
+// Wheel Silent hedef göstergesi
+if (var->cfg.get<bool>("wheel_silent") && Cheat::Silent::HasWheelTarget())
+{
+    Vector3D wheelTargetPos = Cheat::Silent::GetWheelTargetPos();
+    ImVec2 wheelScreenPos = C_Five.WorldToScreen(wheelTargetPos);
+    if (wheelScreenPos.x > 0 && wheelScreenPos.y > 0 && wheelScreenPos.x < ImGui::GetIO().DisplaySize.x && wheelScreenPos.y < ImGui::GetIO().DisplaySize.y)
+    {
+        ImVec2 center(wheelScreenPos.x, wheelScreenPos.y);
+
+        // Parlayan animasyonlu efekt
+        float pulseSize = 20.0f + sin(ImGui::GetTime() * 8.0f) * 5.0f;
+        ImGui::GetBackgroundDrawList()->AddCircleFilled(center, pulseSize, IM_COL32(255, 0, 0, 40));
+        ImGui::GetBackgroundDrawList()->AddCircleFilled(center, pulseSize * 0.7f, IM_COL32(255, 0, 0, 80));
+        ImGui::GetBackgroundDrawList()->AddCircleFilled(center, pulseSize * 0.5f, IM_COL32(255, 0, 0, 120));
+
+        // Ana çemberler
+        ImGui::GetBackgroundDrawList()->AddCircle(center, 15.0f, IM_COL32(255, 0, 0, 255), 32, 2.0f);
+        ImGui::GetBackgroundDrawList()->AddCircle(center, 10.0f, IM_COL32(255, 255, 255, 255), 32, 1.5f);
+
+        // Crosshair'den hedefe çizgi
+        ImVec2 screenCenter(ImGui::GetIO().DisplaySize.x * 0.5f, ImGui::GetIO().DisplaySize.y * 0.5f);
+        ImGui::GetBackgroundDrawList()->AddLine(screenCenter, center, IM_COL32(255, 0, 0, 200), 1.5f);
+    }
+}
+vehiclePtr + 0x90  // Vector3D (x, y, z) - aracın dünya pozisyonu
+vehiclePtr + 0x60  // Matrix4x4 (4x4 transformation matrix) - aracın rotasyonu/yönelimi
+// Farklı FiveM versiyonları için VisibleFlag offset'leri:
+VisibleFlag = 0x142C;  // Bazı versiyonlar
+VisibleFlag = 0x147C;  // Bazı versiyonlar
+VisibleFlag = 0x145C;  // Bazı versiyonlar (daha yeni)
+BYTE visFlag = M_base::mem::Read<BYTE>(vehiclePtr + VisibleFlag);
+
+// Kontrol edilen değerler:
+// visFlag == 36 → görünmez
+// visFlag == 0  → görünmez
+// visFlag == 4  → görünmez
+// Diğer değerler → görünür
+Vector3D wheelOffsets[4] = {
+    Vector3D(-0.9f,  1.4f, -0.35f),  // 0: Sol ön tekerlek
+    Vector3D( 0.9f,  1.4f, -0.35f),  // 1: Sağ ön tekerlek
+    Vector3D(-0.9f, -1.4f, -0.35f),  // 2: Sol arka tekerlek
+    Vector3D( 0.9f, -1.4f, -0.35f)   // 3: Sağ arka tekerlek
+};
+struct Matrix4x4 {
+    float _11, _12, _13, _14;  // Sağ vektör (right vector) + padding
+    float _21, _22, _23, _24;  // Yukarı vektör (up vector) + padding
+    float _31, _32, _33, _34;  // İleri vektör (forward vector) + padding
+    float _41, _42, _43, _44;  // Pozisyon vektörü + scale
+};
+wheelWorldPos.x = vehiclePos.x + (offset.x * vehicleMatrix._11 + offset.y * vehicleMatrix._21 + offset.z * vehicleMatrix._31);
+wheelWorldPos.y = vehiclePos.y + (offset.x * vehicleMatrix._12 + offset.y * vehicleMatrix._22 + offset.z * vehicleMatrix._32);
+wheelWorldPos.z = vehiclePos.z + (offset.x * vehicleMatrix._13 + offset.y * vehicleMatrix._23 + offset.z * vehicleMatrix._33);
